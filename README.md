@@ -10,12 +10,14 @@ A easy to use track-resolver for discord music bot, highly inpired from lavaplay
 
 ## Usage
 ```js
-const trackResolver = require('track-resolver');
+const trackResolver = require('./src');
 const TrackResolver = new trackResolver()
-(async() => {
-    const tracks = await TrackResolver.load('rick astley never gonna give you up')
+const search = async (query) => {
+    const tracks = await TrackResolver.load(query)
     console.log(tracks)
-}()
+}
+search("rick astley never gonna give you up")
+/* soundcloud search: search("scsearch:rick astley never gonna give you up") */
 ```
 ## result: 
 ```js
@@ -26,6 +28,7 @@ const TrackResolver = new trackResolver()
     {
       identifier: 'dQw4w9WgXcQ',
       author: 'Rick Astley',
+      title: 'Rick Astley - Never Gonna Give You Up (Official Music Video)',
       length: 213000,
       isStream: false,
       isSeekable: true,
