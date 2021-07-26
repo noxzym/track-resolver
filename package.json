@@ -1,7 +1,7 @@
 {
   "name": "track-resolver",
   "description": "A track resolver, inspired from lavaplayer track searching.",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "dependencies": {
     "@tokenizer/http": "^0.6.1",
     "icy": "^2.1.0",
@@ -10,7 +10,7 @@
     "spotify-url-info": "^2.2.3",
     "youtubei": "^0.0.1-rc.19"
   },
-  "main": "src",
+  "main": "src/index.js",
   "repository": "https://github.com/NezuChan/track-resolver.git",
   "author": "KagChi",
   "license": "GPL-3.0"
