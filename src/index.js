@@ -18,7 +18,7 @@ module.exports = class trackResolver {
 		let playlist = false;
 		const match = query.match(IDRegex);
 		const isYouTubeSearch = !!match[1];
-        const isSoundcloudSearch = !!match[2];
+                const isSoundcloudSearch = !!match[2];
 		const resource = match[3];
 		let url;
 		if (query.startsWith("http")) url = new URL(query);
@@ -55,8 +55,8 @@ module.exports = class trackResolver {
             payload.tracks.push(info);
         } else if(isYouTubeSearch || (url && url.hostname.includes("youtube") || !isYouTubeSearch && !isSoundcloudSearch )) {
             const data = await YoutubeSource(resource || query, { isSearch: isYouTubeSearch || (!isYouTubeSearch && !isSoundcloudSearch) ? true : false, loadAllTrack: this.options?.loadFullPlaylist });
-			if (!data.entries) return;
-			const infos = data.entries.map(i => ({ identifier: i.id, author: i.channel.name, length: Math.round(i.duration * 1000), isStream: i.isLive ?? i.isLiveContent, isSeekable: i.isLive ? false : i.isLiveContent ? false : true, position: 0, uri: `https://youtube.com/watch?v=${i.id}`, sourceName: "youtube" }));
+            if (!data.entries) return;
+            const infos = data.entries.map(i => ({ identifier: i.id, title: i.title, author: i.channel.name, length: Math.round(i.duration * 1000), isStream: i.isLive ?? i.isLiveContent, isSeekable: i.isLive ? false : i.isLiveContent ? false : true, position: 0, uri: `https://youtube.com/watch?v=${i.id}`, sourceName: "youtube" }));
             if (data.plData) {
                 payload.playlistInfo = data.plData;
                 playlist = true;
