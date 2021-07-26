@@ -11,7 +11,7 @@ A easy to use track-resolver for discord music bot, highly inpired from lavaplay
 ## Status (WIP)
 
 ## Feature
-- Spotify support (WIP)
+- Spotify support
 - Soundcloud support
 - Youtube support
 - Http support
