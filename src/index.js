@@ -38,7 +38,7 @@ module.exports = class trackResolver {
                 playlist = true
             }
             payload.tracks = data.entries
-        } else if (url && !url.hostname.includes("youtu") || !url.hostname.includes("spotify")) {
+        } else if (url && !url.hostname.includes("youtu") || url && !url.hostname.includes("spotify")) {
             const data = await HTTPSource(resource)
             const info = {
                 identifier: resource,
