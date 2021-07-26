@@ -3,6 +3,7 @@
   "description": "A track resolver, inspired from lavaplayer track searching.",
   "version": "0.0.1-alpha",
   "dependencies": {
+    "soundcloud-scraper": "^5.0.0",
     "youtubei": "^0.0.1-rc.19"
   },
   "repository": "https://github.com/NezuChan/track-resolver.git",
