@@ -1,6 +1,6 @@
 const { getData, getPreview, getTracks } = require('spotify-url-info')
 const spotifyRegex = /^(?:https:\/\/open\.spotify\.com\/(?:user\/[A-Za-z0-9]+\/)?|spotify:)(album|playlist|track)(?:[/:])([A-Za-z0-9]+).*$/
-module.exports = async function spotifySource(query, isSearch) {
+module.exports = async function spotifySource(query) {
     const [, type, id] = spotifyRegex.exec(query);
     console.log(type)
     switch(type) {
