@@ -1,10 +1,10 @@
 const YoutubeSource = require("./sources/youtube")
 const SoundCloudSource = require("./sources/soundcloud");
+const spotifySource = require("./sources/spotify");
 const HTTPSource = require("./sources/http");
 const IDRegex = /(ytsearch:)?(scsearch:)?(.+)/;
 const { baseSoundcloudURL } = require('./Constants');
 const soundCloudURL = new URL(baseSoundcloudURL);
-
 module.exports = class trackResolver {
     constructor(options) {
         this.options = options
@@ -30,7 +30,15 @@ module.exports = class trackResolver {
                 payload.playlistInfo = data.plData;
             }
             payload.tracks = data.entries;
-        } else if (url && !url.hostname.includes("youtu")) {
+            
+        } else if(url && url.hostname.includes("spotify")) {
+            const data = await spotifySource(query);
+            if(data.plData) {
+                payload.playlistInfo = data.plData
+                playlist = true
+            }
+            payload.tracks = data.entries
+        } else if (url && !url.hostname.includes("youtu") || url.hostname.includes("spotify")) {
             const data = await HTTPSource(resource)
             const info = {
                 identifier: resource,
@@ -45,7 +53,6 @@ module.exports = class trackResolver {
 
             if (!data) return;
             payload.tracks.push(info);
-
         } else if(isYouTubeSearch || (url && url.hostname.includes("youtube") || !isYouTubeSearch && !isSoundcloudSearch )) {
             const data = await YoutubeSource(resource || query, { isSearch: isYouTubeSearch || (!isYouTubeSearch && !isSoundcloudSearch) ? true : false, loadAllTrack: this.options?.loadFullPlaylist });
 			if (!data.entries) return;
@@ -57,6 +64,6 @@ module.exports = class trackResolver {
             payload.tracks = infos;
         }
         if(payload.tracks.length === 0) return Object.assign({ loadType: "NO_MATCHES"}, payload)
-		return Object.assign({ loadType: payload.tracks.length > 1 && isYouTubeSearch || payload.tracks.length > 1 && (!isYouTubeSearch && !isSoundcloudSearch) ? "SEARCH_RESULT" : playlist ? "PLAYLIST_LOADED" : "TRACK_LOADED"  }, payload)
+		return Object.assign({ loadType: payload.tracks.length > 1 && isYouTubeSearch || (payload.tracks.length > 1 && (!isYouTubeSearch && !isSoundcloudSearch) && !playlist) ? "SEARCH_RESULT" : playlist ? "PLAYLIST_LOADED" : "TRACK_LOADED"  }, payload)
 	}
 }
