@@ -17,7 +17,7 @@ module.exports = class trackResolver {
 		let url;
 		if (query.startsWith("http")) url = new URL(query);
 		if(isYouTubeSearch || (url && url.hostname.includes("youtube"))) {
-			const data = await YoutubeSource(resource || query, isYouTubeSearch, this.options.loadFullPlaylist);
+			const data = await YoutubeSource(resource || query, { isSearch: isYouTubeSearch, loadAllTrack: this.options.loadFullPlaylist });
 			if (!data.entries) return;
 			const infos = data.entries.map(i => ({ identifier: i.id, author: i.channel.name, length: Math.round(i.duration * 1000), isStream: i.isLive || i.isLiveContent, isSeekable: i.duration !== 0, position: 0, uri: `https://youtube.com/watch?v=${i.id}`, sourceName: "youtube" }));
             if (data.plData) {
