@@ -1,7 +1,5 @@
 const { Client } = require('soundcloud-scraper');
-const soundcloud = new Client({
-    
-});
+const soundcloud = new Client();
 //some code copied from volcano: https://github.com/AmandaDiscord/Volcano
 const playlistRegex = /\/sets\//;
 function songResultToTrack(i) {
