@@ -1,5 +1,6 @@
 const YoutubeSource = require("./sources/youtube")
 const SoundCloudSource = require("./sources/soundcloud");
+const HTTPSource = require("./sources/http");
 const IDRegex = /(ytsearch:)?(scsearch:)?(.+)/;
 const { baseSoundcloudURL } = require('./Constants');
 const soundCloudURL = new URL(baseSoundcloudURL);
@@ -28,9 +29,23 @@ module.exports = class trackResolver {
                 playlist = true;
                 payload.playlistInfo = data.plData;
             }
-
             payload.tracks = data.entries;
-            
+        } else if (url && !url.hostname.includes("youtu")) {
+            const data = await HTTPSource(resource)
+            const info = {
+                identifier: resource,
+                author: data.extra.author || data.parsed.common.artist || "Unknown artist",
+                length: Math.round((data.parsed.format.duration || 0) * 1000),
+                isStream: data.extra.stream,
+                position: 0,
+                title: data.extra.title || data.parsed.common.title || "Unknown title",
+                uri: resource,
+                sourceName: 'http'
+            };
+
+            if (!data) return;
+            payload.tracks.push(info);
+
         } else if(isYouTubeSearch || (url && url.hostname.includes("youtube") || !isYouTubeSearch && !isSoundcloudSearch )) {
             const data = await YoutubeSource(resource || query, { isSearch: isYouTubeSearch || (!isYouTubeSearch && !isSoundcloudSearch) ? true : false, loadAllTrack: this.options?.loadFullPlaylist });
 			if (!data.entries) return;
@@ -42,6 +57,6 @@ module.exports = class trackResolver {
             payload.tracks = infos;
         }
         if(payload.tracks.length === 0) return Object.assign({ loadType: "NO_MATCHES"}, payload)
-		return Object.assign({ loadType: payload.tracks.length > 1 && isYouTubeSearch || (!isYouTubeSearch && !isSoundcloudSearch) ? "SEARCH_RESULT" : playlist ? "PLAYLIST_LOADED" : "TRACK_LOADED"  }, payload)
+		return Object.assign({ loadType: payload.tracks.length > 1 && isYouTubeSearch || payload.tracks.length > 1 && (!isYouTubeSearch && !isSoundcloudSearch) ? "SEARCH_RESULT" : playlist ? "PLAYLIST_LOADED" : "TRACK_LOADED"  }, payload)
 	}
 }
