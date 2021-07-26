@@ -10,6 +10,7 @@
     "spotify-url-info": "^2.2.3",
     "youtubei": "^0.0.1-rc.19"
   },
+  "main": "src",
   "repository": "https://github.com/NezuChan/track-resolver.git",
   "author": "KagChi",
   "license": "GPL-3.0"
