@@ -7,7 +7,7 @@ const { baseSoundcloudURL } = require('./Constants');
 const soundCloudURL = new URL(baseSoundcloudURL);
 module.exports = class trackResolver {
     constructor(options) {
-        this.options = options
+        this.options = options ?? {}
     }
     //some code copied from volcano: https://github.com/AmandaDiscord/Volcano
 	async load(query) {
@@ -18,7 +18,7 @@ module.exports = class trackResolver {
 		let playlist = false;
 		const match = query.match(IDRegex);
 		const isYouTubeSearch = !!match[1];
-                const isSoundcloudSearch = !!match[2];
+        const isSoundcloudSearch = !!match[2];
 		const resource = match[3];
 		let url;
 		if (query.startsWith("http")) url = new URL(query);
@@ -38,7 +38,7 @@ module.exports = class trackResolver {
                 playlist = true
             }
             payload.tracks = data.entries
-        } else if (url && !url.hostname.includes("youtu") || url && !url.hostname.includes("spotify")) {
+        } else if (url && !url.hostname.includes("youtu")) {
             const data = await HTTPSource(resource)
             const info = {
                 identifier: resource,
@@ -53,8 +53,8 @@ module.exports = class trackResolver {
 
             if (!data) return;
             payload.tracks.push(info);
-        } else if(isYouTubeSearch || (url && url.hostname.includes("youtube") || !isYouTubeSearch && !isSoundcloudSearch )) {
-            const data = await YoutubeSource(resource || query, { isSearch: isYouTubeSearch || (!isYouTubeSearch && !isSoundcloudSearch) ? true : false, loadAllTrack: this.options?.loadFullPlaylist });
+        } else if(isYouTubeSearch || (url && url.hostname.includes("youtu") || !isYouTubeSearch && !isSoundcloudSearch )) {
+            const data = await YoutubeSource(resource || query, { isSearch: isYouTubeSearch || url && url.hostname.includes("youtu") ? false : true || (!isYouTubeSearch && !isSoundcloudSearch) ? true : false, loadAllTrack: this.options?.loadFullPlaylist });
             if (!data.entries) return;
             const infos = data.entries.map(i => ({ identifier: i.id, title: i.title, author: i.channel.name, length: Math.round(i.duration * 1000), isStream: i.isLive ?? i.isLiveContent, isSeekable: i.isLive ? false : i.isLiveContent ? false : true, position: 0, uri: `https://youtube.com/watch?v=${i.id}`, sourceName: "youtube" }));
             if (data.plData) {
@@ -64,6 +64,6 @@ module.exports = class trackResolver {
             payload.tracks = infos;
         }
         if(payload.tracks.length === 0) return Object.assign({ loadType: "NO_MATCHES"}, payload)
-		return Object.assign({ loadType: payload.tracks.length > 1 && isYouTubeSearch || (payload.tracks.length > 1 && (!isYouTubeSearch && !isSoundcloudSearch) && !playlist) ? "SEARCH_RESULT" : playlist ? "PLAYLIST_LOADED" : "TRACK_LOADED"  }, payload)
+		return Object.assign({ loadType: payload.tracks.length > 1 && (isYouTubeSearch || !isYouTubeSearch && !isSoundcloudSearch && !playlist) ? "SEARCH_RESULT" : playlist ? "PLAYLIST_LOADED" : "TRACK_LOADED"  }, payload)
 	}
 }
