@@ -8,7 +8,7 @@
     "music-metadata": "^7.11.0",
     "soundcloud-scraper": "^5.0.0",
     "spotify-url-info": "^2.2.3",
-    "youtubei": "^0.0.1-rc.19"
+    "youtubei": "^0.0.1-rc.20"
   },
   "main": "src/index.js",
   "repository": "https://github.com/NezuChan/track-resolver.git",
