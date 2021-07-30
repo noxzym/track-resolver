@@ -10,7 +10,7 @@ A easy to use track-resolver for discord music bot, highly inpired from lavaplay
 
 ## Usage
 ```js
-const trackResolver = require('./src');
+const trackResolver = require('track-resolver');
 const TrackResolver = new trackResolver()
 const search = async (query) => {
     const tracks = await TrackResolver.load(query)
