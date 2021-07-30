@@ -10,6 +10,7 @@
     "spotify-url-info": "^2.2.3",
     "youtubei": "^0.0.1-rc.20"
   },
+  "typings": "src/typings/index.d.ts",
   "main": "src/index.js",
   "repository": "https://github.com/NezuChan/track-resolver.git",
   "author": "KagChi",
