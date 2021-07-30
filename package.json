@@ -1,7 +1,7 @@
 {
   "name": "track-resolver",
   "description": "A track resolver, inspired from lavaplayer track searching.",
-  "version": "0.1.6",
+  "version": "0.2.8",
   "dependencies": {
     "@tokenizer/http": "^0.6.1",
     "icy": "^2.1.0",

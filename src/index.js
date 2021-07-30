@@ -44,7 +44,7 @@ module.exports = class trackResolver {
       }
       payload.tracks = data.entries;
     } else if (url && url.hostname.includes('spotify')) {
-      const data = await spotifySource(query).catch((e) => Util.standardErrorHandler(e, payload));
+      const data = await spotifySource(query, this.options?.resolveSpotify).catch((e) => Util.standardErrorHandler(e, payload));
       if (!data.entries || data?.entries.length === 0 || !data) return { loadType: 'NO_MATCHES', ...payload };
 
       if (data.plData) {

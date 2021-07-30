@@ -1,6 +1,7 @@
 declare module 'track-resolver' {
     export interface trackOptions {
-        loadFullPlaylist?: boolean
+        loadFullPlaylist?: boolean,
+        resolveSpotify?: boolean,
     }
 
     export interface trackResult {
