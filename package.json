@@ -1,12 +1,12 @@
 {
   "name": "track-resolver",
   "description": "A track resolver, inspired from lavaplayer track searching.",
-  "version": "0.0.6",
+  "version": "0.1.6",
   "dependencies": {
     "@tokenizer/http": "^0.6.1",
     "icy": "^2.1.0",
     "music-metadata": "^7.11.0",
-    "soundcloud-scraper": "^5.0.0",
+    "soundcloud.ts": "^0.4.0",
     "spotify-url-info": "^2.2.3",
     "youtubei": "^0.0.1-rc.20"
   },
