@@ -27,7 +27,7 @@ module.exports = async function spotifySource(query, autoResolve = false) {
       const albumInfo = await getData(query);
       if(autoResolve) {
         const resolvingTracks = tracks.map(async x => youtube.findOne(`${x.name}- ${x.artists.map(x => x.name).join(" ")}`, { type: 'video' }));
-        const resolvedTracks = await Promise.all(resolvingTracks);
+        const resolvedTracks = (await Promise.all(resolvingTracks)).filter(x => x !== undefined);
         return { entries: resolvedTracks.map((x) => resolverToTrack(x)), plData: { name: albumInfo.name, selectedTrack: 1 } };
       }
       return { entries: tracks.map((x) => songResultToTrack(x)), plData: { name: albumInfo.name, selectedTrack: 1 } };
@@ -38,7 +38,7 @@ module.exports = async function spotifySource(query, autoResolve = false) {
       const playlistInfo = await getData(query);
       if(autoResolve) {
         const resolvingTracks = tracks.map(async x => youtube.findOne(`${x.name}- ${x.artists.map(x => x.name).join(" ")}`, { type: 'video' }));
-        const resolvedTracks = await Promise.all(resolvingTracks);
+        const resolvedTracks = (await Promise.all(resolvingTracks)).filter(x => x !== undefined);
         return { entries: resolvedTracks.map((x) => resolverToTrack(x)), plData: { name: playlistInfo.name, selectedTrack: 1 } };
       }
       return { entries: tracks.map((x) => songResultToTrack(x)), plData: { name: playlistInfo.name, selectedTrack: 1 } };
@@ -48,7 +48,7 @@ module.exports = async function spotifySource(query, autoResolve = false) {
       const tracks = await getTracks(query);
       if(autoResolve) {
         const resolvingTracks = tracks.map(async x => youtube.findOne(`${x.name}- ${x.artists.map(x => x.name).join(" ")}`, { type: 'video' }));
-        const resolvedTracks = await Promise.all(resolvingTracks);
+        const resolvedTracks =( await Promise.all(resolvingTracks)).filter(x => x !== undefined);
         return { entries: resolvedTracks.map((x) => resolverToTrack(x)) };
       }
       return { entries: tracks.map((x) => songResultToTrack(x)) };
