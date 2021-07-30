@@ -41,7 +41,7 @@ module.exports = class trackResolver {
             payload.tracks = data.entries;
             
         } else if(url && url.hostname.includes("spotify")) {
-            const data = await spotifySource(query).catch(e => Util.standardErrorHandler(e, payload));;
+            const data = await spotifySource(query).catch(e => Util.standardErrorHandler(e, payload));
             if(data.plData) {
                 payload.playlistInfo = data.plData
                 playlist = true
@@ -59,7 +59,6 @@ module.exports = class trackResolver {
                 uri: resource,
                 sourceName: 'http'
             };
-
             if (!data) return;
             payload.tracks.push(info);
         } else if(isYouTubeSearch || (url && url.hostname.includes("youtu") || !isYouTubeSearch && !isSoundcloudSearch )) {
